@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection } from "firebase/firestore";
+import { getFirestore } from "firebase/firestore";
+import { getDatabase } from "firebase/database";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCGbG5mypHsC36spPFDaZj6yvBI9u_rx-o",
@@ -9,7 +10,10 @@ const firebaseConfig = {
   messagingSenderId: "678369921155",
   appId: "1:678369921155:web:c0f6ad96fe6f78d43833b6",
   measurementId: "G-96ZYLXS22V",
+  databaseURL:
+    "https://fyp-web-app-6f954-default-rtdb.asia-southeast1.firebasedatabase.app/",
 };
 
 const app = initializeApp(firebaseConfig);
 export const firestore = getFirestore(app);
+export const database = getDatabase(app);

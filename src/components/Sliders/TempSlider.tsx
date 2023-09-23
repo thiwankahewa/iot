@@ -1,41 +1,48 @@
 import { useState, useEffect } from "react";
 import Slider from "@mui/material/Slider";
 import Typography from "@mui/material/Typography";
+import { database } from "../../firebase";
+import { ref, onValue, update } from "firebase/database";
 
-function ECSlider() {
+function TempSlider() {
   const [range, setRange] = useState<number[]>([0.0, 0.0]);
 
   const handleSliderChange = (event: Event, newValue: number | number[]) => {
     if (typeof newValue === "object" && newValue.length === 2) {
       setRange(newValue);
-      localStorage.setItem("selectedECRange", JSON.stringify(newValue));
+      update(ref(database, "sliderValue/"), { tempValue: newValue });
     }
   };
 
   useEffect(() => {
-    const storedRange = localStorage.getItem("selectedECRange");
-    if (storedRange) {
-      setRange(JSON.parse(storedRange));
-    }
+    onValue(ref(database, "sliderValue"), (snapshot) => {
+      const data = snapshot.val();
+      setRange(data.tempValue);
+    });
   }, []);
 
   return (
-    <div style={{ display: "flex", alignItems: "center" }}>
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+      }}
+    >
       <Typography id="range-slider" gutterBottom style={{ flex: 1 }}>
-        EC Range: {range[0]} - {range[1]}
+        Temperature Range: {range[0]} - {range[1]} °C
       </Typography>
       <Slider
         value={range}
         onChange={handleSliderChange}
-        min={0.0}
-        max={5.0}
-        step={0.1}
+        min={15}
+        max={30}
+        step={1}
         valueLabelDisplay="auto"
         aria-labelledby="range-slider"
-        style={{ flex: 1, width: "100%" }}
+        style={{ flex: 1, width: "100%", marginBottom: "7px" }}
       />
     </div>
   );
 }
 
-export default ECSlider;
+export default TempSlider;

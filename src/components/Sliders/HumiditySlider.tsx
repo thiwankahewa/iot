@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Slider from "@mui/material/Slider";
 import Typography from "@mui/material/Typography";
+import { database } from "../../firebase";
+import { ref, onValue, update } from "firebase/database";
 
 function HumiditySlider() {
   const [value, setValue] = useState<number>(0);
@@ -8,15 +10,15 @@ function HumiditySlider() {
   const handleSliderChange = (event: Event, newValue: number | number[]) => {
     if (typeof newValue === "number") {
       setValue(newValue);
-      localStorage.setItem("selectedHumidityValue", JSON.stringify(newValue));
+      update(ref(database, "sliderValue/"), { humidityValue: newValue });
     }
   };
 
   useEffect(() => {
-    const storedValue = localStorage.getItem("selectedHumidityValue");
-    if (storedValue) {
-      setValue(JSON.parse(storedValue));
-    }
+    onValue(ref(database, "sliderValue"), (snapshot) => {
+      const data = snapshot.val();
+      setValue(data.humidityValue);
+    });
   }, []);
 
   return (
@@ -32,7 +34,7 @@ function HumiditySlider() {
         step={5}
         valueLabelDisplay="auto"
         aria-labelledby="range-slider"
-        style={{ flex: 1, width: "100%" }}
+        style={{ flex: 1, width: "100%", marginBottom: "7px" }}
       />
     </div>
   );

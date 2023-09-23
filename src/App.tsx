@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import Monitoring from "./pages/Monitoring";
 import Controlling from "./pages/Controlling";
 import Robot from "./pages/Robot";
+import Typography from "@mui/material/Typography";
 
 function App() {
   return (

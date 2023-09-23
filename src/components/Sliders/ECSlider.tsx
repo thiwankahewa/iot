@@ -1,45 +1,43 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Slider from "@mui/material/Slider";
 import Typography from "@mui/material/Typography";
+import { database } from "../../firebase";
+import { ref, onValue, update } from "firebase/database";
 
-function TempSlider() {
-  // State to store the selected range
+function ECSlider() {
   const [range, setRange] = useState<number[]>([0.0, 0.0]);
 
-  // Function to handle the slider value change
   const handleSliderChange = (event: Event, newValue: number | number[]) => {
     if (typeof newValue === "object" && newValue.length === 2) {
       setRange(newValue);
-      // Store the selected range in localStorage
-      localStorage.setItem("selectedTempRange", JSON.stringify(newValue));
+      update(ref(database, "sliderValue/"), { ecValue: newValue });
     }
   };
 
-  // Load the last selected range from localStorage on component mount
   useEffect(() => {
-    const storedRange = localStorage.getItem("selectedTempRange");
-    if (storedRange) {
-      setRange(JSON.parse(storedRange));
-    }
+    onValue(ref(database, "sliderValue"), (snapshot) => {
+      const data = snapshot.val();
+      setRange(data.ecValue);
+    });
   }, []);
 
   return (
     <div style={{ display: "flex", alignItems: "center" }}>
       <Typography id="range-slider" gutterBottom style={{ flex: 1 }}>
-        Temperature Range: {range[0]} - {range[1]} °C
+        EC Range: {range[0]} - {range[1]}
       </Typography>
       <Slider
         value={range}
         onChange={handleSliderChange}
-        min={15}
-        max={30}
-        step={1}
+        min={0.0}
+        max={5.0}
+        step={0.1}
         valueLabelDisplay="auto"
         aria-labelledby="range-slider"
-        style={{ flex: 1, width: "100%" }}
+        style={{ flex: 1, width: "100%", marginBottom: "7px" }}
       />
     </div>
   );
 }
 
-export default TempSlider;
+export default ECSlider;

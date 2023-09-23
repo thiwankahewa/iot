@@ -1,26 +1,24 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Slider from "@mui/material/Slider";
 import Typography from "@mui/material/Typography";
+import { database } from "../../firebase";
+import { ref, onValue, update } from "firebase/database";
 
 function PHSlider() {
-  // State to store the selected range
   const [range, setRange] = useState<number[]>([0.0, 0.0]);
 
-  // Function to handle the slider value change
   const handleSliderChange = (event: Event, newValue: number | number[]) => {
     if (typeof newValue === "object" && newValue.length === 2) {
       setRange(newValue);
-      // Store the selected range in localStorage
-      localStorage.setItem("selectedPHRange", JSON.stringify(newValue));
+      update(ref(database, "sliderValue/"), { phValue: newValue });
     }
   };
 
-  // Load the last selected range from localStorage on component mount
   useEffect(() => {
-    const storedRange = localStorage.getItem("selectedPHRange");
-    if (storedRange) {
-      setRange(JSON.parse(storedRange));
-    }
+    onValue(ref(database, "sliderValue"), (snapshot) => {
+      const data = snapshot.val();
+      setRange(data.phValue);
+    });
   }, []);
 
   return (
@@ -36,7 +34,7 @@ function PHSlider() {
         step={0.1}
         valueLabelDisplay="auto"
         aria-labelledby="range-slider"
-        style={{ flex: 1, width: "100%" }}
+        style={{ flex: 1, width: "100%", marginBottom: "7px" }}
       />
     </div>
   );
