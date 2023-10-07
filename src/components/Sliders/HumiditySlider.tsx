@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Slider from "@mui/material/Slider";
 import Typography from "@mui/material/Typography";
 import { database } from "../../firebase";
@@ -7,7 +7,7 @@ import { ref, onValue, update } from "firebase/database";
 function HumiditySlider() {
   const [value, setValue] = useState<number>(0);
 
-  const handleSliderChange = (event: Event, newValue: number | number[]) => {
+  const handleSliderChange = (_event: Event, newValue: number | number[]) => {
     if (typeof newValue === "number") {
       setValue(newValue);
       update(ref(database, "sliderValue/"), { humidityValue: newValue });

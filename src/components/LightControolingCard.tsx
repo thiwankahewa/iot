@@ -5,18 +5,20 @@ import Paper from "@mui/material/Paper";
 import GrowLight1 from "./Switches/GrowLight1";
 import GrowLight2 from "./Switches/GrowLight2";
 import GrowLight3 from "./Switches/GrowLight3";
-import IconButton from "@mui/material/IconButton";
-import LightbulbIcon from "@mui/icons-material/Lightbulb";
 
 const card = (
   <React.Fragment>
     <CardContent>
-      <Typography style={{ fontWeight: "bold" }}>
-        <IconButton color="primary">
-          <LightbulbIcon />
-        </IconButton>
-        Light Controlling
-      </Typography>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        <Typography style={{ fontWeight: "bold" }}>
+          Light Controlling
+        </Typography>
+      </div>
       <br />
       <div style={{ alignItems: "center" }}>
         <GrowLight1 />

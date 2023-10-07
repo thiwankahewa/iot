@@ -13,12 +13,16 @@ export default function CircularProgressWithLabel(
   }
 ) {
   return (
-    <Box sx={{ position: "relative", display: "inline-flex" }}>
+    <Box
+      sx={{
+        position: "relative",
+        display: "inline-flex",
+      }}
+    >
       <CircularProgress
         variant="determinate"
         {...props}
         size={140}
-        style={{ color: props.colr }}
         thickness={2}
       />
       <Box

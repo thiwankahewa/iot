@@ -5,18 +5,20 @@ import Paper from "@mui/material/Paper";
 import Solenoid1 from "./Switches/Solenoid1";
 import FanSwitch from "./Switches/fanSwitch";
 import StirringSystem from "./Switches/StirringSystem";
-import IconButton from "@mui/material/IconButton";
-import SportsEsportsIcon from "@mui/icons-material/SportsEsports";
 
 const card = (
   <React.Fragment>
     <CardContent>
-      <Typography style={{ fontWeight: "bold" }}>
-        <IconButton color="primary">
-          <SportsEsportsIcon />
-        </IconButton>
-        Other Controlling
-      </Typography>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        <Typography style={{ fontWeight: "bold" }}>
+          Other Controlling
+        </Typography>
+      </div>
       <br />
       <div style={{ alignItems: "center" }}>
         <FanSwitch />

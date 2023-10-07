@@ -4,7 +4,7 @@ import Home from "./pages/Home";
 import Monitoring from "./pages/Monitoring";
 import Controlling from "./pages/Controlling";
 import Robot from "./pages/Robot";
-import Typography from "@mui/material/Typography";
+import Testpage from "./pages/TestPage";
 
 function App() {
   return (
@@ -16,6 +16,7 @@ function App() {
           <Route path="/monitoring" element={<Monitoring />} />
           <Route path="/controlling" element={<Controlling />} />
           <Route path="/robot" element={<Robot />} />
+          <Route path="/test" element={<Testpage />} />
         </Routes>
       </div>
     </Router>

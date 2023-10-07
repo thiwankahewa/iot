@@ -7,18 +7,20 @@ import AirPump from "./Switches/AirPump";
 import AcidPump from "./Switches/AcidPump";
 import BasePump from "./Switches/BasePump";
 import NutrientPump from "./Switches/NutrientPump";
-import WaterDropIcon from "@mui/icons-material/WaterDrop";
-import IconButton from "@mui/material/IconButton";
 
 const card = (
   <React.Fragment>
     <CardContent>
-      <Typography style={{ fontWeight: "bold", fontSize: "16px" }}>
-        <IconButton color="primary">
-          <WaterDropIcon />
-        </IconButton>
-        Pump Controlling
-      </Typography>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        <Typography style={{ fontWeight: "bold", fontSize: "16px" }}>
+          Pump Controlling
+        </Typography>
+      </div>
       <br />
       <div style={{ alignItems: "center" }}>
         <WaterPump />

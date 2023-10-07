@@ -10,42 +10,75 @@ import PrecisionManufacturingIcon from "@mui/icons-material/PrecisionManufacturi
 import TuneIcon from "@mui/icons-material/Tune";
 import backGround from "../assets/1.jpg";
 import Typography from "@mui/material/Typography";
+import Tooltip from "@mui/material/Tooltip";
 
 const routes = [
   {
     path: "/",
-    text: <Typography style={{ fontWeight: "bold" }}>Home</Typography>,
-    icon: <HomeIcon />,
+    text: <Typography style={{ fontWeight: "bold" }}></Typography>,
+    icon: (
+      <Tooltip title="Home">
+        <HomeIcon />
+      </Tooltip>
+    ),
   },
   {
     path: "/monitoring",
-    text: <Typography style={{ fontWeight: "bold" }}>Monitoring</Typography>,
-    icon: <MonitorIcon />,
+    text: <Typography style={{ fontWeight: "bold" }}></Typography>,
+    icon: (
+      <Tooltip title="Monitoring">
+        <MonitorIcon />
+      </Tooltip>
+    ),
   },
   {
     path: "/controlling",
-    text: <Typography style={{ fontWeight: "bold" }}>Controlling</Typography>,
-    icon: <TuneIcon />,
+    text: <Typography style={{ fontWeight: "bold" }}></Typography>,
+    icon: (
+      <Tooltip title="Controlling">
+        <TuneIcon />
+      </Tooltip>
+    ),
   },
   {
     path: "/robot",
-    text: <Typography style={{ fontWeight: "bold" }}>Robot</Typography>,
-    icon: <PrecisionManufacturingIcon />,
+    text: <Typography style={{ fontWeight: "bold" }}></Typography>,
+    icon: (
+      <Tooltip title="Robot">
+        <PrecisionManufacturingIcon />
+      </Tooltip>
+    ),
+  },
+  {
+    path: "/test",
+    text: <Typography style={{ fontWeight: "bold" }}></Typography>,
+    icon: (
+      <Tooltip title="Test">
+        <HomeIcon />
+      </Tooltip>
+    ),
   },
 ];
 
+const drawerWidth = 72;
+
 function DrawerComponent() {
   const location = useLocation();
+
   const containerStyle = {
     backgroundImage: `url(${backGround})`,
     backgroundSize: "cover",
     backgroundRepeat: "no-repeat",
     backgroundPosition: "center center",
-    width: "167px",
+    width: "72px",
     height: "100vh",
   };
   return (
-    <Drawer variant="permanent" anchor="left" style={{ width: "167px" }}>
+    <Drawer
+      variant="permanent"
+      anchor="left"
+      style={{ width: `${drawerWidth}px` }}
+    >
       <List style={containerStyle}>
         {routes.map((route, index) => (
           <Link

@@ -7,7 +7,7 @@ import { ref, onValue, update } from "firebase/database";
 function PHSlider() {
   const [range, setRange] = useState<number[]>([0.0, 0.0]);
 
-  const handleSliderChange = (event: Event, newValue: number | number[]) => {
+  const handleSliderChange = (_event: Event, newValue: number | number[]) => {
     if (typeof newValue === "object" && newValue.length === 2) {
       setRange(newValue);
       update(ref(database, "sliderValue/"), { phValue: newValue });

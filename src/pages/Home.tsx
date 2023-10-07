@@ -5,6 +5,18 @@ import Paper from "@mui/material/Paper";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
+import ImageSlider from "../DefinedFunctions/ImageSlider";
+import greeanhouse from "../assets/greenhouse.jpg";
+import greeanhouse1 from "../assets/greenhouse1.webp";
+import greeanhouse2 from "../assets/greenhouse2.webp";
+import robot from "../assets/robot.jpg";
+import robot1 from "../assets/robot1.jpg";
+import robot2 from "../assets/robot2.jpg";
+import controller from "../assets/intelligentcontroller.webp";
+import controller1 from "../assets/intelligentcontroller1.webp";
+import controller2 from "../assets/intelligentcontroller2.webp";
+import PlaygroundSpeedDial from "../components/Contact";
+import logo from "../assets/logo.png";
 
 const Home = () => {
   const containerStyle = {
@@ -17,21 +29,25 @@ const Home = () => {
     paddingLeft: "10px",
   };
 
+  const images1 = [greeanhouse, greeanhouse1, greeanhouse2];
+  const images2 = [controller, controller1, controller2];
+  const images3 = [robot, robot1, robot2];
   return (
     <div style={containerStyle}>
-      <div style={{ width: "100%" }}>
-        <br />
-        <Typography
-          style={{
-            fontSize: "50px",
-            fontWeight: "bolder",
-            display: "flex",
-            justifyContent: "center",
-          }}
-        >
-          GrowWise Automations
-        </Typography>
+      <br />
+      <div
+        style={{
+          fontSize: "50px",
+          fontWeight: "bolder",
+          display: "flex",
+          justifyContent: "center",
+          marginTop: "-180px",
+          marginBottom: "-120px",
+        }}
+      >
+        <img src={logo} style={{ width: "400px" }} />
       </div>
+
       <br />
       <div
         style={{
@@ -45,6 +61,7 @@ const Home = () => {
             marginRight: "10px",
             width: "33%",
             opacity: "95%",
+            height: "100%",
           }}
         >
           <Typography
@@ -57,7 +74,8 @@ const Home = () => {
           >
             Green House Structure
           </Typography>
-          <img src="src\assets\greenhouse.jpg" width={"100%"} />
+          <ImageSlider images={images1} />
+
           <Accordion>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
@@ -89,6 +107,7 @@ const Home = () => {
             marginRight: "10px",
             width: "33%",
             opacity: "95%",
+            height: "100%",
           }}
         >
           <Typography
@@ -101,7 +120,7 @@ const Home = () => {
           >
             Intelligent Controller
           </Typography>
-          <img src="src\assets\intelligent controller.webp" width={"100%"} />
+          <ImageSlider images={images2} />
           <Accordion>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
@@ -133,6 +152,7 @@ const Home = () => {
             marginRight: "10px",
             width: "33%",
             opacity: "95%",
+            height: "100%",
           }}
         >
           <Typography
@@ -145,7 +165,7 @@ const Home = () => {
           >
             Robotic System
           </Typography>
-          <img src="src\assets\robot1.jpg" width={"100%"} />
+          <ImageSlider images={images3} />
           <Accordion>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
@@ -171,6 +191,9 @@ const Home = () => {
             </AccordionDetails>
           </Accordion>
         </Paper>
+      </div>
+      <div>
+        <PlaygroundSpeedDial />
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { database } from "../../firebase";
-import { ref, onValue, update } from "firebase/database";
+import { ref, onValue, remove } from "firebase/database";
 import Typography from "@mui/material/Typography";
 import CircularProgressWithLabel from "../../DefinedFunctions/CircularProgressBar";
 import MapValueToPercentage from "../../DefinedFunctions/MapToPercentage";
@@ -15,15 +15,35 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import createData from "../../DefinedFunctions/CreateData";
+
+interface HistoryItem {
+  standardTime: string;
+  value: number;
+}
+const PastData = 20;
+let history: HistoryItem[] = [];
 
 function AirTemp() {
-  const [range, setRange] = useState<number>(0);
+  const [_range, setRange] = useState<number>(0);
 
   useEffect(() => {
-    onValue(ref(database, "sensorData"), (snapshot) => {
+    onValue(ref(database, "sensorData/roomTemp"), (snapshot) => {
       const data = snapshot.val();
-      setRange(data.ec["123"]);
-      console.log(data.ec["123"]);
+      if (Object.keys(data).length == PastData + 1) {
+        remove(ref(database, "sensorData/roomTemp/" + Object.keys(data)[0]));
+      }
+      snapshot.forEach((childSnapshot) => {
+        const childData = childSnapshot.val();
+        const value = Number(Object.values(childData)[0]);
+        const timestamp = childSnapshot.key;
+        history.unshift(createData(timestamp, value));
+      });
+      if (history.length > PastData) {
+        history.splice(PastData - 1);
+      }
+
+      setRange(history[0].value);
     });
   }, []);
 
@@ -34,6 +54,7 @@ function AirTemp() {
         marginRight: "10px",
         width: "33%",
         opacity: "85%",
+        height: "100%",
       }}
     >
       <div style={{}}>
@@ -46,7 +67,7 @@ function AirTemp() {
             fontWeight: "bold",
           }}
         >
-          Room Temperature (15°C-30°C)
+          Room Temperature (15°C - 30°C)
         </Typography>
         <div
           style={{
@@ -57,8 +78,8 @@ function AirTemp() {
           }}
         >
           <CircularProgressWithLabel
-            value={MapValueToPercentage(5, 0, 14)}
-            realValue={0}
+            value={MapValueToPercentage(_range, 15, 30)}
+            realValue={_range}
             typo="°C"
             colr="blue"
           />
@@ -71,23 +92,30 @@ function AirTemp() {
             <Typography>Past Data</Typography>
           </AccordionSummary>
           <AccordionDetails>
-            <TableContainer>
+            <TableContainer sx={{ maxHeight: 200 }}>
               <Table
                 sx={{ minWidth: 100 }}
                 size="small"
                 aria-label="a dense table"
+                stickyHeader
               >
                 <TableHead>
                   <TableRow>
-                    <TableCell>Timestamp</TableCell>
-                    <TableCell>Value</TableCell>
+                    <TableCell style={{ fontWeight: "bold" }}>
+                      Timestamp
+                    </TableCell>
+                    <TableCell style={{ fontWeight: "bold" }}>
+                      Value (°C)
+                    </TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  <TableRow>
-                    <TableCell scope="row">15:30</TableCell>
-                    <TableCell>3</TableCell>
-                  </TableRow>
+                  {history.map((row) => (
+                    <TableRow>
+                      <TableCell scope="row">{row.standardTime}</TableCell>
+                      <TableCell>{row.value}</TableCell>
+                    </TableRow>
+                  ))}
                 </TableBody>
               </Table>
             </TableContainer>

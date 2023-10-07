@@ -1,6 +1,6 @@
 import EcData from "../components/SensorData/ECData";
 import PhData from "../components/SensorData/PHData";
-import WaterLevel from "../components/SensorData/WaterLevel1";
+import WaterLevel from "../components/SensorData/WaterLevels";
 import HumidityData from "../components/SensorData/Humidity";
 import WaterTemp from "../components/SensorData/WaterTemp";
 import AirTemp from "../components/SensorData/AirTemp";
@@ -21,7 +21,7 @@ const Monitoring = () => {
   return (
     <div style={containerStyle}>
       <br />
-
+      <div></div>
       <div>
         <Typography
           style={{

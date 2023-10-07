@@ -1,28 +1,32 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Switch from "@mui/material/Switch";
-import { database } from "../../firebase";
+import { database } from "../firebase";
 import { ref, onValue, update } from "firebase/database";
 import Typography from "@mui/material/Typography";
 
-function Solenoid1() {
+const Toggle: React.FC<{ key: string; name: string }> = ({ key, name }) => {
   const [isChecked, setIsChecked] = useState<boolean>(false);
+
   const handleSwitchChange = () => {
     const newState = !isChecked;
     setIsChecked(newState);
-    update(ref(database, "switchState/"), { Solenoid1: newState });
+    const dataRef = ref(database, "switchState/");
+    update(dataRef, { [key]: newState });
+    console.log("o");
   };
 
   useEffect(() => {
     onValue(ref(database, "switchState"), (snapshot) => {
       const data = snapshot.val();
-      setIsChecked(data.Solenoid1);
+      setIsChecked(data[key]);
+      console.log();
     });
   }, []);
 
   return (
     <div style={{ display: "flex", flexDirection: "row" }}>
       <Typography gutterBottom style={{ flex: 1 }}>
-        Solenoid Valve
+        {name}
       </Typography>
       <Switch
         style={{ flex: 1 }}
@@ -31,6 +35,6 @@ function Solenoid1() {
       />
     </div>
   );
-}
+};
 
-export default Solenoid1;
+export default Toggle;

@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import Switch from "@mui/material/Switch";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import { database } from "../../firebase";
 import { ref, onValue, update } from "firebase/database";
 import Typography from "@mui/material/Typography";
