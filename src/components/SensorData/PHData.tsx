@@ -16,10 +16,14 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import createData from "../../DefinedFunctions/CreateData";
+import PhCal from "../PhCal";
+import LineGraph1 from "../../DefinedFunctions/LineGraph1";
+import { Stack } from "@mui/material";
 
 interface HistoryItem {
   standardTime: string;
   value: number;
+  date: number;
 }
 const PastData = 20;
 let history: HistoryItem[] = [];
@@ -30,8 +34,10 @@ function PhData() {
   useEffect(() => {
     onValue(ref(database, "sensorData/ph"), (snapshot) => {
       const data = snapshot.val();
-      if (Object.keys(data).length == PastData + 1) {
-        remove(ref(database, "sensorData/ph/" + Object.keys(data)[0]));
+      if (Object.keys(data).length >= PastData + 1) {
+        for (let i = 0; i < Object.keys(data).length - PastData + 1; i++) {
+          remove(ref(database, "sensorData/ph/" + Object.keys(data)[i]));
+        }
       }
       snapshot.forEach((childSnapshot) => {
         const childData = childSnapshot.val();
@@ -57,23 +63,26 @@ function PhData() {
         height: "100%",
       }}
     >
-      <div style={{}}>
-        <Typography
-          gutterBottom
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            marginTop: "10px",
-            fontWeight: "bold",
-          }}
+      <div>
+        <Stack
+          direction="row"
+          justifyContent="center"
+          style={{ marginBottom: "9px" }}
+          spacing={1}
         >
-          PH Value (0-14)
-        </Typography>
+          <LineGraph1
+            title="PH Value (0-14)"
+            dataPoints={history}
+            yTitle="PH Value"
+            prefix=""
+          />
+          <PhCal />
+        </Stack>
         <div
           style={{
             display: "flex",
             justifyContent: "center",
-            marginTop: "10px",
+            marginTop: "-5px",
             marginBottom: "15px",
           }}
         >

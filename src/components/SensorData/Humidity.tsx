@@ -16,10 +16,12 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import createData from "../../DefinedFunctions/CreateData";
+import LineGraph1 from "../../DefinedFunctions/LineGraph1";
 
 interface HistoryItem {
   standardTime: string;
   value: number;
+  date: number;
 }
 const PastData = 20;
 let history: HistoryItem[] = [];
@@ -30,8 +32,10 @@ function HumidityData() {
   useEffect(() => {
     onValue(ref(database, "sensorData/humidity"), (snapshot) => {
       const data = snapshot.val();
-      if (Object.keys(data).length == PastData + 1) {
-        remove(ref(database, "sensorData/humidity/" + Object.keys(data)[0]));
+      if (Object.keys(data).length >= PastData + 1) {
+        for (let i = 0; i < Object.keys(data).length - PastData + 1; i++) {
+          remove(ref(database, "sensorData/humidity/" + Object.keys(data)[i]));
+        }
       }
       snapshot.forEach((childSnapshot) => {
         const childData = childSnapshot.val();
@@ -59,17 +63,12 @@ function HumidityData() {
       }}
     >
       <div style={{}}>
-        <Typography
-          gutterBottom
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            marginTop: "10px",
-            fontWeight: "bold",
-          }}
-        >
-          Humidity (0% - 100%)
-        </Typography>
+        <LineGraph1
+          title="Humidity (0% - 100%)"
+          dataPoints={history}
+          yTitle="Humidity (%)"
+          prefix="%"
+        />
         <div
           style={{
             display: "flex",

@@ -2,9 +2,7 @@ import * as React from "react";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
-import Solenoid1 from "./Switches/Solenoid1";
-import FanSwitch from "./Switches/fanSwitch";
-import StirringSystem from "./Switches/StirringSystem";
+import ToggleSwitch from "./ToogleSwich";
 
 const card = (
   <React.Fragment>
@@ -20,10 +18,10 @@ const card = (
         </Typography>
       </div>
       <br />
-      <div style={{ alignItems: "center" }}>
-        <FanSwitch />
-        <StirringSystem />
-        <Solenoid1 />
+      <div>
+        <ToggleSwitch title="FanSwitch" path="fan" />
+        <ToggleSwitch title="Stirring System" path="StirringSystem" />
+        <ToggleSwitch title="Solenoid1" path="Solenoid1" />
       </div>
     </CardContent>
   </React.Fragment>

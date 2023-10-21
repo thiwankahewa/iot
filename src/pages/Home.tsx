@@ -192,7 +192,7 @@ const Home = () => {
           </Accordion>
         </Paper>
       </div>
-      <div>
+      <div style={{}}>
         <PlaygroundSpeedDial />
       </div>
     </div>

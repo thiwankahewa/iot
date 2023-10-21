@@ -2,9 +2,7 @@ import * as React from "react";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
-import GrowLight1 from "./Switches/GrowLight1";
-import GrowLight2 from "./Switches/GrowLight2";
-import GrowLight3 from "./Switches/GrowLight3";
+import ToggleSwitch from "./ToogleSwich";
 
 const card = (
   <React.Fragment>
@@ -21,9 +19,9 @@ const card = (
       </div>
       <br />
       <div style={{ alignItems: "center" }}>
-        <GrowLight1 />
-        <GrowLight2 />
-        <GrowLight3 />
+        <ToggleSwitch title="Grow Light 1" path="growLight1" />
+        <ToggleSwitch title="Grow Light 2" path="growLight2" />
+        <ToggleSwitch title="Grow Light 3" path="growLight3" />
       </div>
     </CardContent>
   </React.Fragment>

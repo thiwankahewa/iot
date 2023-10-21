@@ -16,10 +16,12 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import createData from "../../DefinedFunctions/CreateData";
+import LineGraph1 from "../../DefinedFunctions/LineGraph1";
 
 interface HistoryItem {
   standardTime: string;
   value: number;
+  date: number;
 }
 const PastData = 20;
 let history: HistoryItem[] = [];
@@ -30,8 +32,10 @@ function AirTemp() {
   useEffect(() => {
     onValue(ref(database, "sensorData/roomTemp"), (snapshot) => {
       const data = snapshot.val();
-      if (Object.keys(data).length == PastData + 1) {
-        remove(ref(database, "sensorData/roomTemp/" + Object.keys(data)[0]));
+      if (Object.keys(data).length >= PastData + 1) {
+        for (let i = 0; i < Object.keys(data).length - PastData + 1; i++) {
+          remove(ref(database, "sensorData/roomTemp/" + Object.keys(data)[i]));
+        }
       }
       snapshot.forEach((childSnapshot) => {
         const childData = childSnapshot.val();
@@ -46,7 +50,7 @@ function AirTemp() {
       setRange(history[0].value);
     });
   }, []);
-
+  console.log(history);
   return (
     <Paper
       elevation={2}
@@ -58,17 +62,13 @@ function AirTemp() {
       }}
     >
       <div style={{}}>
-        <Typography
-          gutterBottom
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            marginTop: "10px",
-            fontWeight: "bold",
-          }}
-        >
-          Room Temperature (15°C - 30°C)
-        </Typography>
+        <LineGraph1
+          title=" Room Temperature (15°C - 30°C)"
+          dataPoints={history}
+          yTitle="Room Temperature (°C)"
+          prefix="°C"
+        />
+
         <div
           style={{
             display: "flex",
@@ -84,6 +84,7 @@ function AirTemp() {
             colr="blue"
           />
         </div>
+
         <Accordion style={{}}>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}

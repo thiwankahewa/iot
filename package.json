@@ -10,11 +10,16 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@canvasjs/charts": "^3.7.24",
+    "@canvasjs/react-charts": "^1.0.0",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@fontsource/roboto": "^5.0.8",
+    "@mui/base": "^5.0.0-beta.20",
     "@mui/icons-material": "^5.14.8",
     "@mui/material": "^5.14.8",
+    "@mui/x-charts": "^6.0.0-alpha.15",
+    "@types/canvasjs": "^1.9.10",
     "axios": "^1.5.1",
     "bootstrap": "^5.3.2",
     "firebase": "^10.4.0",
@@ -31,8 +36,8 @@
   },
   "devDependencies": {
     "@types/firebase": "^3.2.1",
-    "@types/react": "^18.2.15",
-    "@types/react-dom": "^18.2.7",
+    "@types/react": "^18.2.29",
+    "@types/react-dom": "^18.2.14",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
     "@vitejs/plugin-react": "^4.0.3",

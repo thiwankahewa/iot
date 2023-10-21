@@ -16,10 +16,12 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import createData from "../../DefinedFunctions/CreateData";
+import LineGraph1 from "../../DefinedFunctions/LineGraph1";
 
 interface HistoryItem {
   standardTime: string;
   value: number;
+  date: number;
 }
 const PastData = 20;
 let history: HistoryItem[] = [];
@@ -30,8 +32,10 @@ function EcData() {
   useEffect(() => {
     onValue(ref(database, "sensorData/ec"), (snapshot) => {
       const data = snapshot.val();
-      if (Object.keys(data).length == PastData + 1) {
-        remove(ref(database, "sensorData/ec/" + Object.keys(data)[0]));
+      if (Object.keys(data).length >= PastData + 1) {
+        for (let i = 0; i < Object.keys(data).length - PastData + 1; i++) {
+          remove(ref(database, "sensorData/ec/" + Object.keys(data)[i]));
+        }
       }
       snapshot.forEach((childSnapshot) => {
         const childData = childSnapshot.val();
@@ -58,17 +62,12 @@ function EcData() {
       }}
     >
       <div style={{}}>
-        <Typography
-          gutterBottom
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            marginTop: "10px",
-            fontWeight: "bold",
-          }}
-        >
-          EC Value (0-5)
-        </Typography>
+        <LineGraph1
+          title=" EC Value (0-5)"
+          dataPoints={history}
+          yTitle="EC Value (ppm)"
+          prefix=" ppm"
+        />
         <div
           style={{
             display: "flex",

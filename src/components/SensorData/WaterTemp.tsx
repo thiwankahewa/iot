@@ -16,10 +16,12 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import createData from "../../DefinedFunctions/CreateData";
+import LineGraph1 from "../../DefinedFunctions/LineGraph1";
 
 interface HistoryItem {
   standardTime: string;
   value: number;
+  date: number;
 }
 const PastData = 20;
 let history: HistoryItem[] = [];
@@ -30,10 +32,12 @@ function WaterTemp() {
   useEffect(() => {
     onValue(ref(database, "sensorData/solutionTemp"), (snapshot) => {
       const data = snapshot.val();
-      if (Object.keys(data).length == PastData + 1) {
-        remove(
-          ref(database, "sensorData/solutionTemp/" + Object.keys(data)[0])
-        );
+      if (Object.keys(data).length >= PastData + 1) {
+        for (let i = 0; i < Object.keys(data).length - PastData + 1; i++) {
+          remove(
+            ref(database, "sensorData/solutionTemp/" + Object.keys(data)[i])
+          );
+        }
       }
       snapshot.forEach((childSnapshot) => {
         const childData = childSnapshot.val();
@@ -60,17 +64,12 @@ function WaterTemp() {
       }}
     >
       <div style={{}}>
-        <Typography
-          gutterBottom
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            marginTop: "10px",
-            fontWeight: "bold",
-          }}
-        >
-          Solution Temperature (15°C - 30°C)
-        </Typography>
+        <LineGraph1
+          title="Solution Temperature (15°C - 30°C)"
+          dataPoints={history}
+          yTitle="Solution Temperature (°C)"
+          prefix="°C"
+        />
         <div
           style={{
             display: "flex",

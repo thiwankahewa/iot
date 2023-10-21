@@ -3,19 +3,16 @@ import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
 import HomeIcon from "@mui/icons-material/Home";
 import MonitorIcon from "@mui/icons-material/Visibility";
 import PrecisionManufacturingIcon from "@mui/icons-material/PrecisionManufacturing";
 import TuneIcon from "@mui/icons-material/Tune";
 import backGround from "../assets/1.jpg";
-import Typography from "@mui/material/Typography";
 import Tooltip from "@mui/material/Tooltip";
 
 const routes = [
   {
     path: "/",
-    text: <Typography style={{ fontWeight: "bold" }}></Typography>,
     icon: (
       <Tooltip title="Home">
         <HomeIcon />
@@ -24,7 +21,6 @@ const routes = [
   },
   {
     path: "/monitoring",
-    text: <Typography style={{ fontWeight: "bold" }}></Typography>,
     icon: (
       <Tooltip title="Monitoring">
         <MonitorIcon />
@@ -33,7 +29,6 @@ const routes = [
   },
   {
     path: "/controlling",
-    text: <Typography style={{ fontWeight: "bold" }}></Typography>,
     icon: (
       <Tooltip title="Controlling">
         <TuneIcon />
@@ -42,7 +37,6 @@ const routes = [
   },
   {
     path: "/robot",
-    text: <Typography style={{ fontWeight: "bold" }}></Typography>,
     icon: (
       <Tooltip title="Robot">
         <PrecisionManufacturingIcon />
@@ -51,12 +45,6 @@ const routes = [
   },
   {
     path: "/test",
-    text: <Typography style={{ fontWeight: "bold" }}></Typography>,
-    icon: (
-      <Tooltip title="Test">
-        <HomeIcon />
-      </Tooltip>
-    ),
   },
 ];
 
@@ -91,7 +79,6 @@ function DrawerComponent() {
           >
             <ListItem button selected={location.pathname === route.path}>
               <ListItemIcon>{route.icon}</ListItemIcon>
-              <ListItemText primary={route.text} />
             </ListItem>
           </Link>
         ))}

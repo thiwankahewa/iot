@@ -2,11 +2,7 @@ import * as React from "react";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
-import WaterPump from "./Switches/WaterPump";
-import AirPump from "./Switches/AirPump";
-import AcidPump from "./Switches/AcidPump";
-import BasePump from "./Switches/BasePump";
-import NutrientPump from "./Switches/NutrientPump";
+import ToggleSwitch from "./ToogleSwich";
 
 const card = (
   <React.Fragment>
@@ -22,12 +18,12 @@ const card = (
         </Typography>
       </div>
       <br />
-      <div style={{ alignItems: "center" }}>
-        <WaterPump />
-        <AirPump />
-        <NutrientPump />
-        <AcidPump />
-        <BasePump />
+      <div style={{}}>
+        <ToggleSwitch title="Water Pump" path="waterPump" />
+        <ToggleSwitch title="Air Pump" path="AirPump" />
+        <ToggleSwitch title="Nutrient Pump" path="NutrientPump" />
+        <ToggleSwitch title="Acid Pump" path="AcidPump" />
+        <ToggleSwitch title="Base Pump" path="BasePump" />
       </div>
     </CardContent>
   </React.Fragment>

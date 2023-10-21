@@ -1,11 +1,5 @@
-import VideoComponent from "../components/CameraFeed";
-
 const Testpage = () => {
-  return (
-    <div>
-      <VideoComponent />
-    </div>
-  );
+  return <div></div>;
 };
 
 export default Testpage;
