@@ -1,15 +1,15 @@
 import React from "react";
 // @ts-ignore
-import CanvasJSReact from "@canvasjs/react-charts";
+//import CanvasJSReact from "@canvasjs/react-charts";
 import Typography from "@mui/material/Typography";
-import Dialog from "@mui/material/Dialog";
-import Paper from "@mui/material/Paper";
+//import Dialog from "@mui/material/Dialog";
+//import Paper from "@mui/material/Paper";
 
-const CanvasJSChart = CanvasJSReact.CanvasJSChart;
+//const CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 interface HistoryItem {
   standardTime: string;
-  value: number;
+  value: number[];
   date: number;
 }
 
@@ -18,12 +18,13 @@ const LineGraph1: React.FC<{
   dataPoints: HistoryItem[];
   yTitle: string;
   prefix: string;
-}> = ({ dataPoints, yTitle, title, prefix }) => {
-  const [isDialogOpen, setIsDialogOpen] = React.useState(false);
+  index: number;
+}> = ({ title }) => {
+  //const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  const dataObjects = dataPoints.map((item) => ({
+  /*const dataObjects = dataPoints.map((item) => ({
     x: item.date,
-    y: item.value,
+    y: item.value[index],
   }));
 
   const openDialog = () => {
@@ -62,10 +63,12 @@ const LineGraph1: React.FC<{
       },
     ],
   };
+  
+  onClick={openDialog}*/
 
   return (
     <div>
-      <div onClick={openDialog} style={{}}>
+      <div>
         <Typography
           gutterBottom
           style={{
@@ -80,10 +83,15 @@ const LineGraph1: React.FC<{
           {title}
         </Typography>
       </div>
-      <Dialog open={isDialogOpen} onClose={closeDialog}>
+      {/*<Dialog
+        open={isDialogOpen}
+        onClose={closeDialog}
+        fullWidth={true}
+        maxWidth={"lg"}
+      >
         <Paper
           style={{
-            width: "600px",
+            width: "100%",
             height: "460px",
             paddingTop: "20px",
             paddingLeft: "20px",
@@ -100,7 +108,7 @@ const LineGraph1: React.FC<{
             color: #2e86b3;
           }
         `}
-      </style>
+      </style>*/}
     </div>
   );
 };

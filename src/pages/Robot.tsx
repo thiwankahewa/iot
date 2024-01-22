@@ -1,23 +1,15 @@
-import backGround from "../assets/background.jpeg";
 import Typography from "@mui/material/Typography";
 import CurrentDateTime from "../DefinedFunctions/CurrentDataTime";
 import VideoComponent2 from "../components/CameraFeed2";
+import RobotNavigation from "../components/RobotNavigation";
+import "../App.css";
 
 const Robot = () => {
-  const containerStyle = {
-    backgroundImage: `url(${backGround})`,
-    backgroundSize: "cover",
-    backgroundRepeat: "no-repeat",
-    backgroundPosition: "center center",
-    width: "100vw",
-    height: "100vh",
-    paddingLeft: "10px",
-  };
   return (
-    <div style={containerStyle}>
+    <div className="pageBackground">
       <br />
 
-      <div style={{}}>
+      <div>
         <Typography
           style={{
             textAlign: "right",
@@ -29,16 +21,13 @@ const Robot = () => {
         </Typography>
       </div>
 
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "flex-end",
-          marginRight: "10px",
-          marginTop: "20px",
-        }}
-      >
-        <VideoComponent2 />
+      <div style={{ marginTop: "-2%" }}>
+        <div className="robotControl">
+          <RobotNavigation />
+        </div>
+        <div className="cameraFeed">
+          <VideoComponent2 />
+        </div>
       </div>
     </div>
   );

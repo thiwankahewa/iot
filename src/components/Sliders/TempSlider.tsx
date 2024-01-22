@@ -11,6 +11,7 @@ function TempSlider() {
     if (typeof newValue === "object" && newValue.length === 2) {
       setRange(newValue);
       update(ref(database, "sliderValue/"), { tempValue: newValue });
+      update(ref(database, "flags/"), { flag: true });
     }
   };
 
@@ -22,16 +23,12 @@ function TempSlider() {
   }, []);
 
   return (
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-      }}
-    >
-      <Typography id="range-slider" gutterBottom style={{ flex: 1 }}>
-        Temperature Range: {range[0]} - {range[1]} °C
+    <div className="sliderContainer">
+      <Typography className="rangeSliderName" gutterBottom>
+        Room Temp. Range: {range[0]} - {range[1]} °C
       </Typography>
       <Slider
+        className="rangeSlider"
         value={range}
         onChange={handleSliderChange}
         min={15}
@@ -39,7 +36,6 @@ function TempSlider() {
         step={1}
         valueLabelDisplay="auto"
         aria-labelledby="range-slider"
-        style={{ flex: 1, width: "100%", marginBottom: "7px" }}
       />
     </div>
   );

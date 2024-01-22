@@ -1,27 +1,12 @@
-import EcData from "../components/SensorData/ECData";
-import PhData from "../components/SensorData/PHData";
-import WaterLevel from "../components/SensorData/WaterLevels";
-import HumidityData from "../components/SensorData/Humidity";
-import WaterTemp from "../components/SensorData/WaterTemp";
-import AirTemp from "../components/SensorData/AirTemp";
-import backGround from "../assets/background.jpeg";
+import WaterLevel from "../components/WaterLevelsData";
 import Typography from "@mui/material/Typography";
 import CurrentDateTime from "../DefinedFunctions/CurrentDataTime";
+import SensorData from "../components/SensorData";
 
 const Monitoring = () => {
-  const containerStyle = {
-    backgroundImage: `url(${backGround})`,
-    backgroundSize: "cover",
-    backgroundRepeat: "no-repeat",
-    backgroundPosition: "center center",
-    width: "100vw",
-    height: "100vh",
-    paddingLeft: "10px",
-  };
   return (
-    <div style={containerStyle}>
+    <div className="pageBackground">
       <br />
-      <div></div>
       <div>
         <Typography
           style={{
@@ -34,21 +19,55 @@ const Monitoring = () => {
         </Typography>
       </div>
       <br />
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          marginBottom: "10px",
-        }}
-      >
-        <EcData />
-        <PhData />
-        <WaterLevel />
-      </div>
-      <div style={{ display: "flex", flexDirection: "row" }}>
-        <HumidityData />
-        <AirTemp />
-        <WaterTemp />
+      <div>
+        <div className="monitoring">
+          <SensorData
+            index={0}
+            minVal={1}
+            maxVal={5}
+            title="EC value"
+            prefix=" mS/cm"
+          />
+        </div>
+        <div className="monitoring">
+          <SensorData
+            index={2}
+            minVal={4}
+            maxVal={7}
+            title="PH value"
+            prefix=""
+          />
+        </div>
+        <div className="monitoring">
+          <SensorData
+            index={1}
+            minVal={0}
+            maxVal={100}
+            title="Humidity"
+            prefix="%"
+          />
+        </div>
+        <div className="monitoring">
+          <SensorData
+            index={3}
+            minVal={15}
+            maxVal={30}
+            title="Room Temperature"
+            prefix="°C"
+          />
+        </div>
+        <div className="monitoring">
+          <SensorData
+            index={4}
+            minVal={15}
+            maxVal={30}
+            title="Solution Temperature"
+            prefix="°C"
+          />
+        </div>
+        <div className="monitoring">
+          <WaterLevel />
+        </div>
       </div>
     </div>
   );

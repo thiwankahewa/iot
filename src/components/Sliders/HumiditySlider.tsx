@@ -5,12 +5,13 @@ import { database } from "../../firebase";
 import { ref, onValue, update } from "firebase/database";
 
 function HumiditySlider() {
-  const [value, setValue] = useState<number>(0);
+  const [value, setValue] = useState<number[]>([0, 0]);
 
   const handleSliderChange = (_event: Event, newValue: number | number[]) => {
-    if (typeof newValue === "number") {
+    if (typeof newValue === "object" && newValue.length === 2) {
       setValue(newValue);
       update(ref(database, "sliderValue/"), { humidityValue: newValue });
+      update(ref(database, "flags/"), { flag: true });
     }
   };
 
@@ -22,11 +23,12 @@ function HumiditySlider() {
   }, []);
 
   return (
-    <div style={{ display: "flex", alignItems: "center" }}>
-      <Typography id="range-slider" gutterBottom style={{ flex: 1 }}>
-        Humidity: {value} %
+    <div className="sliderContainer">
+      <Typography className="rangeSliderName" gutterBottom>
+        Humidity Range: {value[0]}% - {value[1]}%
       </Typography>
       <Slider
+        className="rangeSlider"
         value={value}
         onChange={handleSliderChange}
         min={0}
@@ -34,7 +36,7 @@ function HumiditySlider() {
         step={5}
         valueLabelDisplay="auto"
         aria-labelledby="range-slider"
-        style={{ flex: 1, width: "100%", marginBottom: "7px" }}
+        style={{ width: "100%" }}
       />
     </div>
   );

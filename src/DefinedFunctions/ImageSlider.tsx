@@ -14,11 +14,13 @@ const ImageSlider: React.FC<{ images: string[] }> = ({ images }) => {
   }, []);
 
   return (
-    <img
-      src={images[currentIndex]}
-      alt={`Image ${currentIndex + 1}`}
-      width={"100%"}
-    />
+    <div style={{ margin: "2%", overflow: "hidden", borderRadius: 5 }}>
+      <img
+        src={images[currentIndex]}
+        alt={`Image ${currentIndex + 1}`}
+        width={"100%"}
+      />
+    </div>
   );
 };
 

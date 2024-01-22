@@ -5,21 +5,33 @@ import Monitoring from "./pages/Monitoring";
 import Controlling from "./pages/Controlling";
 import Robot from "./pages/Robot";
 import Testpage from "./pages/TestPage";
+import { Offline, Online } from "react-detect-offline";
+import NetworkStatus from "./components/NetworkStatus";
 
 function App() {
   return (
-    <Router>
-      <div style={{ display: "flex" }}>
-        <Drawer />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/monitoring" element={<Monitoring />} />
-          <Route path="/controlling" element={<Controlling />} />
-          <Route path="/robot" element={<Robot />} />
-          <Route path="/test" element={<Testpage />} />
-        </Routes>
-      </div>
-    </Router>
+    <div>
+      <Offline>
+        <NetworkStatus />
+      </Offline>
+      <Online>
+        <Router>
+          <div style={{ display: "flex" }}>
+            <div style={{ opacity: "100%" }}>
+              <Drawer />
+            </div>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/monitoring" element={<Monitoring />} />
+              <Route path="/controlling" element={<Controlling />} />
+              <Route path="/robot" element={<Robot />} />
+
+              <Route path="/test" element={<Testpage />} />
+            </Routes>
+          </div>
+        </Router>
+      </Online>
+    </div>
   );
 }
 

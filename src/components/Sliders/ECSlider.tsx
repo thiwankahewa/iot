@@ -11,6 +11,7 @@ function ECSlider() {
     if (typeof newValue === "object" && newValue.length === 2) {
       setRange(newValue);
       update(ref(database, "sliderValue/"), { ecValue: newValue });
+      update(ref(database, "flags/"), { flag: true });
     }
   };
 
@@ -22,19 +23,19 @@ function ECSlider() {
   }, []);
 
   return (
-    <div style={{ display: "flex", alignItems: "center" }}>
-      <Typography id="range-slider" gutterBottom style={{ flex: 1 }}>
-        EC Range: {range[0]} - {range[1]}
+    <div className="sliderContainer">
+      <Typography gutterBottom className="rangeSliderName">
+        EC Range: {range[0]} - {range[1]} mS/cm
       </Typography>
       <Slider
+        className="rangeSlider"
         value={range}
         onChange={handleSliderChange}
-        min={0.0}
+        min={1.0}
         max={5.0}
         step={0.1}
         valueLabelDisplay="auto"
         aria-labelledby="range-slider"
-        style={{ flex: 1, width: "100%", marginBottom: "7px" }}
       />
     </div>
   );

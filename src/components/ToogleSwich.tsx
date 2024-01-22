@@ -4,14 +4,14 @@ import { database } from "../firebase";
 import { ref, onValue, update } from "firebase/database";
 import Typography from "@mui/material/Typography";
 import { Switch, switchClasses } from "@mui/base/Switch";
-import Grid from "@mui/material/Grid";
 
 const ToggleSwitch: React.FC<{ title: string; path: string }> = ({
   title,
   path,
 }) => {
-  const label = { slotProps: { input: { "aria-label": "Demo switch" } } };
   const [isChecked, setIsChecked] = useState<boolean>(false);
+  const [mode, setMode] = useState<boolean>(false);
+
   const handleSwitchChange = () => {
     const newState = !isChecked;
     setIsChecked(newState);
@@ -22,30 +22,33 @@ const ToggleSwitch: React.FC<{ title: string; path: string }> = ({
     onValue(ref(database, "switchState"), (snapshot) => {
       const data = snapshot.val();
       setIsChecked(data[path]);
+      setMode(data.iController);
     });
   }, []);
 
   return (
-    <Grid container spacing={2} justifyContent="center">
-      <Grid item xs={6} md={8} sm={7} lg={9}>
-        <Typography>{title}</Typography>
-      </Grid>
-      <Grid item xs={6} sm={5} md={4} lg={3} style={{}}>
-        <div>
-          <Switch
-            style={{
-              marginTop: "0px",
-            }}
-            checked={isChecked}
-            onChange={handleSwitchChange}
-            slots={{
-              root: Root,
-            }}
-            {...label}
-          />
-        </div>
-      </Grid>
-    </Grid>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+      }}
+    >
+      <Typography style={{ marginLeft: "10%" }}>{title}</Typography>
+
+      <Switch
+        style={{
+          marginTop: "0px",
+          marginRight: "10%",
+        }}
+        checked={isChecked}
+        disabled={mode}
+        onChange={handleSwitchChange}
+        slots={{
+          root: Root,
+        }}
+      />
+    </div>
   );
 };
 

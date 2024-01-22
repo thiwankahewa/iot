@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import { database } from "../../firebase";
-import { ref, onValue, remove } from "firebase/database";
+import { database } from "../firebase";
+import { ref, onValue } from "firebase/database";
 import Typography from "@mui/material/Typography";
-import CircularProgressWithLabel from "../../DefinedFunctions/CircularProgressBar";
-import MapValueToPercentage from "../../DefinedFunctions/MapToPercentage";
+import CircularProgressWithLabel from "../DefinedFunctions/CircularProgressBar";
+import MapValueToPercentage from "../DefinedFunctions/MapToPercentage";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -15,75 +15,83 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import createData from "../../DefinedFunctions/CreateData";
-import LineGraph1 from "../../DefinedFunctions/LineGraph1";
+import createData from "../DefinedFunctions/CreateData";
+import LineGraph1 from "../DefinedFunctions/LineGraph1";
 
 interface HistoryItem {
   standardTime: string;
-  value: number;
+  value: number[];
   date: number;
 }
-const PastData = 20;
+
 let history: HistoryItem[] = [];
 
-function HumidityData() {
-  const [_range, setRange] = useState<number>(0);
+const SensorData: React.FC<{
+  index: number;
+  minVal: number;
+  maxVal: number;
+  title: string;
+  prefix: string;
+}> = ({ index, minVal, maxVal, prefix, title }) => {
+  const [range, setRange] = useState<number[]>([]);
 
   useEffect(() => {
-    onValue(ref(database, "sensorData/humidity"), (snapshot) => {
-      const data = snapshot.val();
-      if (Object.keys(data).length >= PastData + 1) {
-        for (let i = 0; i < Object.keys(data).length - PastData + 1; i++) {
-          remove(ref(database, "sensorData/humidity/" + Object.keys(data)[i]));
-        }
-      }
+    onValue(ref(database, "sensorData"), (snapshot) => {
+      history = [];
       snapshot.forEach((childSnapshot) => {
-        const childData = childSnapshot.val();
-        const value = Number(Object.values(childData)[0]);
-        const timestamp = childSnapshot.key;
-        history.unshift(createData(timestamp, value));
+        childSnapshot.forEach((babySnapshot) => {
+          const babyData = babySnapshot.val();
+
+          const value: number[] = [];
+          for (let i = 0; i < 5; i++) {
+            value[i] = Number(Object.values(babyData)[i]);
+          }
+          const timestamp = childSnapshot.key;
+          history.unshift(createData(timestamp, value));
+        });
       });
-      if (history.length > PastData) {
-        history.splice(PastData - 1);
-      }
+      console.log(history);
 
       setRange(history[0].value);
-      console.log(history.length);
     });
   }, []);
 
   return (
-    <Paper
-      elevation={2}
-      style={{
-        marginRight: "10px",
-        width: "33%",
-        opacity: "85%",
-        height: "100%",
-      }}
-    >
-      <div style={{}}>
+    <Paper elevation={2}>
+      <div style={{ paddingTop: "1%" }}>
         <LineGraph1
-          title="Humidity (0% - 100%)"
+          title={
+            title +
+            " (" +
+            String(minVal) +
+            String(prefix) +
+            " - " +
+            String(maxVal) +
+            String(prefix) +
+            ")"
+          }
           dataPoints={history}
-          yTitle="Humidity (%)"
-          prefix="%"
+          yTitle={title + " (" + String(prefix) + ")"}
+          prefix={prefix}
+          index={index}
         />
+
         <div
           style={{
             display: "flex",
             justifyContent: "center",
-            marginTop: "10px",
-            marginBottom: "15px",
+            marginTop: "5%",
+            marginBottom: "5%",
           }}
         >
           <CircularProgressWithLabel
-            value={MapValueToPercentage(_range, 0, 100)}
-            realValue={_range}
-            typo="%"
+            value={MapValueToPercentage(range[index], minVal, maxVal)}
+            realValue={range[index]}
+            typo={prefix}
             colr="blue"
           />
         </div>
+
         <Accordion style={{}}>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
@@ -92,7 +100,7 @@ function HumidityData() {
             <Typography>Past Data</Typography>
           </AccordionSummary>
           <AccordionDetails>
-            <TableContainer sx={{ maxHeight: 200 }}>
+            <TableContainer style={{ maxHeight: "200px" }}>
               <Table
                 sx={{ minWidth: 100 }}
                 size="small"
@@ -105,7 +113,7 @@ function HumidityData() {
                       Timestamp
                     </TableCell>
                     <TableCell style={{ fontWeight: "bold" }}>
-                      Value (%)
+                      Value ({prefix})
                     </TableCell>
                   </TableRow>
                 </TableHead>
@@ -113,7 +121,7 @@ function HumidityData() {
                   {history.map((row) => (
                     <TableRow>
                       <TableCell scope="row">{row.standardTime}</TableCell>
-                      <TableCell>{row.value}</TableCell>
+                      <TableCell>{row.value[index]}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -124,6 +132,6 @@ function HumidityData() {
       </div>
     </Paper>
   );
-}
+};
 
-export default HumidityData;
+export default SensorData;

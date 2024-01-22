@@ -5,9 +5,10 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { Stack } from "@mui/material";
 import { IconButton } from "@mui/material";
-import SettingsIcon from "@mui/icons-material/Settings";
 import Dialog from "@mui/material/Dialog";
 import Tooltip from "@mui/material/Tooltip";
+import Lottie from "lottie-react";
+import settingsAni from "../assets/settingsAni.json";
 
 export default function PhCal() {
   const [value1, setValue1] = useState<number>(0);
@@ -44,7 +45,7 @@ export default function PhCal() {
     <div>
       <Tooltip title="Calibration">
         <IconButton onClick={openDialog}>
-          <SettingsIcon />
+          <Lottie animationData={settingsAni} style={{ width: "30%" }} />
         </IconButton>
       </Tooltip>
       <Dialog open={isDialogOpen} onClose={closeDialog}>

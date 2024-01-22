@@ -1,6 +1,5 @@
 import * as React from "react";
 import { styled } from "@mui/material/styles";
-import Box from "@mui/material/Box";
 import SpeedDial from "@mui/material/SpeedDial";
 import SpeedDialAction from "@mui/material/SpeedDialAction";
 import PhoneIcon from "@mui/icons-material/Phone";
@@ -55,7 +54,7 @@ export default function PlaygroundSpeedDial() {
     setIsDialogOpen3(false);
   };
   return (
-    <Box sx={{ position: "relative", mt: "-25px", height: 150 }}>
+    <div>
       <div>
         <StyledSpeedDial
           ariaLabel="SpeedDial playground example"
@@ -85,29 +84,13 @@ export default function PlaygroundSpeedDial() {
         </StyledSpeedDial>
       </div>
       <Dialog open={isDialogOpen1} onClose={closeDialog1}>
-        <Paper
-          style={{
-            width: "500px",
-            height: "100px",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
+        <Paper className="contact">
           <Lottie animationData={phoneAni} style={{ width: "15%" }} />
           <Typography> Mobile No: +94 70 523 6050</Typography>
         </Paper>
       </Dialog>
       <Dialog open={isDialogOpen2} onClose={closeDialog2}>
-        <Paper
-          style={{
-            width: "500px",
-            height: "100px",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
+        <Paper className="contact">
           <Lottie animationData={emailAni} style={{ width: "15%" }} />
           <Typography>
             {" "}
@@ -119,17 +102,10 @@ export default function PlaygroundSpeedDial() {
         </Paper>
       </Dialog>
       <Dialog open={isDialogOpen3} onClose={closeDialog3}>
-        <Paper
-          style={{
-            width: "500px",
-            height: "100px",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
+        <Paper className="contact">
           <Lottie animationData={fbAni} style={{ width: "10%" }} />
-          <Typography>
+
+          <Typography variant="body2">
             {" "}
             Visit Our Facebook Page :{" "}
             <Link href="https://www.facebook.com/profile.php?id=100032604936877">
@@ -139,6 +115,6 @@ export default function PlaygroundSpeedDial() {
         </Paper>
       </Dialog>
       ;
-    </Box>
+    </div>
   );
 }

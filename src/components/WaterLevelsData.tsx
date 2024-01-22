@@ -1,31 +1,23 @@
 import { useState, useEffect } from "react";
-import { database } from "../../firebase";
+import { database } from "../firebase";
 import { ref, onValue } from "firebase/database";
 import Typography from "@mui/material/Typography";
-import CircularProgressWithLabel from "../../DefinedFunctions/CircularProgressBar";
-import MapValueToPercentage from "../../DefinedFunctions/MapToPercentage";
+import CircularProgressWithLabel from "../DefinedFunctions/CircularProgressBar";
+import MapValueToPercentage from "../DefinedFunctions/MapToPercentage";
 import Paper from "@mui/material/Paper";
 
 function WaterLevel() {
-  const [_range, setRange] = useState<number>(0);
+  const [value, setValue] = useState<number>(0);
 
   useEffect(() => {
-    onValue(ref(database, "sensorData"), (snapshot) => {
+    onValue(ref(database, "waterLevels"), (snapshot) => {
       const data = snapshot.val();
-      setRange(data.ec["123"]);
+      setValue(data.mainContainer);
     });
   }, []);
 
   return (
-    <Paper
-      elevation={2}
-      style={{
-        width: "33%",
-        marginRight: "10px",
-        opacity: "85%",
-        height: "247px",
-      }}
-    >
+    <Paper elevation={2}>
       <div style={{ display: "flex", flexDirection: "row" }}>
         <div style={{ flex: 1 }}>
           <Typography
@@ -34,7 +26,7 @@ function WaterLevel() {
               display: "flex",
               justifyContent: "center",
               marginLeft: "5px",
-              marginTop: "10px",
+              marginTop: "10%",
               fontWeight: "bold",
             }}
           >
@@ -49,9 +41,9 @@ function WaterLevel() {
             }}
           >
             <CircularProgressWithLabel
-              value={MapValueToPercentage(5, 0, 5)}
-              realValue={0}
-              typo=" %"
+              value={MapValueToPercentage(value, 0, 5)}
+              realValue={value}
+              typo="%"
               colr="blue"
             />
           </div>
@@ -62,7 +54,7 @@ function WaterLevel() {
             style={{
               display: "flex",
               justifyContent: "center",
-              marginTop: "10px",
+              marginTop: "10%",
               marginLeft: "5px",
               fontWeight: "bold",
             }}

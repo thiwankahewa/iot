@@ -11,6 +11,7 @@ function PHSlider() {
     if (typeof newValue === "object" && newValue.length === 2) {
       setRange(newValue);
       update(ref(database, "sliderValue/"), { phValue: newValue });
+      update(ref(database, "flags/"), { flag: true });
     }
   };
 
@@ -22,19 +23,19 @@ function PHSlider() {
   }, []);
 
   return (
-    <div style={{ display: "flex", alignItems: "center" }}>
-      <Typography id="range-slider" gutterBottom style={{ flex: 1 }}>
+    <div className="sliderContainer">
+      <Typography className="rangeSliderName">
         PH Range: {range[0]} - {range[1]}
       </Typography>
       <Slider
+        className="rangeSlider"
         value={range}
         onChange={handleSliderChange}
-        min={0.0}
-        max={14.0}
+        min={4.0}
+        max={7.0}
         step={0.1}
         valueLabelDisplay="auto"
         aria-labelledby="range-slider"
-        style={{ flex: 1, width: "100%", marginBottom: "7px" }}
       />
     </div>
   );

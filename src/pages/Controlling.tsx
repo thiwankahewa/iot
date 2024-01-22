@@ -1,45 +1,31 @@
-import LightControlingCard from "../components/LightControolingCard";
-import SliderdCard from "../components/SliderCard";
-import PumpControlingCard from "../components/PumpControllingCard";
-import OtherControlingCard from "../components/OtherControllingCard";
-import backGround from "../assets/background.jpeg";
-import Typography from "@mui/material/Typography";
-import CurrentDateTime from "../DefinedFunctions/CurrentDataTime";
+import PumpControlingCard from "../components/ManualControllingCard";
+import Settings from "../components/Settings";
+import CardContent from "@mui/material/CardContent";
+import ECSlider from "../components/Sliders/ECSlider";
+import HumiditySlider from "../components/Sliders/PHSlider";
+import PHSlider from "../components/Sliders/HumiditySlider";
+import TempSlider from "../components/Sliders/TempSlider";
+import Paper from "@mui/material/Paper";
 
 const Controlling = () => {
-  const containerStyle = {
-    backgroundImage: `url(${backGround})`,
-    backgroundSize: "cover",
-    backgroundRepeat: "no-repeat",
-    backgroundPosition: "center center",
-    width: "100vw",
-    height: "100vh",
-    paddingLeft: "10px",
-  };
   return (
-    <div style={containerStyle}>
+    <div className="pageBackground">
       <br />
 
-      <div>
-        <Typography
-          style={{
-            textAlign: "right",
-            paddingRight: "20px",
-            fontWeight: "bolder",
-          }}
-        >
-          <CurrentDateTime />
-        </Typography>
-      </div>
-      <br />
+      <Paper elevation={2} className="sliders">
+        <CardContent>
+          <ECSlider />
+          <PHSlider />
+          <HumiditySlider />
+          <TempSlider />
+        </CardContent>
+      </Paper>
 
-      <div style={{ marginBottom: "10px" }}>
-        <SliderdCard />
-      </div>
-      <div style={{ display: "flex", flexDirection: "row" }}>
+      <div className="controlling">
         <PumpControlingCard />
-        <LightControlingCard />
-        <OtherControlingCard />
+      </div>
+      <div className="settings">
+        <Settings />
       </div>
     </div>
   );

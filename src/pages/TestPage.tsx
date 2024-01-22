@@ -1,5 +1,3 @@
-const Testpage = () => {
+export default function TestPage() {
   return <div></div>;
-};
-
-export default Testpage;
+}
