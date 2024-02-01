@@ -26,6 +26,7 @@ export default function RobotNavigation() {
   const [isChecked, setIsChecked] = useState<boolean>(false);
   const [scan, setScan] = useState<boolean>(false);
   const [transplant, setTransplant] = useState<boolean>(false);
+  const [harvest, setHarvest] = useState<boolean>(false);
   const [dotsCount, setDotsCount] = useState(1);
 
   const handleRowChange = (_event: Event, newValue: number | number[]) => {
@@ -67,6 +68,7 @@ export default function RobotNavigation() {
       setIsChecked(data.mode);
       setScan(data.scan);
       setTransplant(data.transplant);
+      setHarvest(data.harvest);
     });
     const intervalId = setInterval(() => {
       setDotsCount((prevCount) => (prevCount < 5 ? prevCount + 1 : 1));
@@ -117,6 +119,24 @@ export default function RobotNavigation() {
           }}
         >
           <h1>Transplanting{generateDots()}</h1>
+          <Lottie
+            animationData={scanAni}
+            style={{
+              width: "80%",
+            }}
+          />
+        </div>
+      ) : harvest ? (
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            padding: "5%",
+          }}
+        >
+          <h1>Harvesting{generateDots()}</h1>
           <Lottie
             animationData={scanAni}
             style={{

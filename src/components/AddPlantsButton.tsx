@@ -13,11 +13,13 @@ import plantingAni from "../assets/plantingAni.json";
 import { database } from "../firebase";
 import { ref, update } from "firebase/database";
 import PrecisionManufacturingIcon from "@mui/icons-material/PrecisionManufacturing";
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 
 function AddPlantsButton() {
   const [open1, setOpen1] = useState(false);
   const [open2, setOpen2] = useState(false);
   const [openTransplant, setOpenTransplant] = useState(false);
+  const [openHarvest, setOpenHarvest] = useState(false);
 
   const handleOpen1 = () => {
     setOpen1(true);
@@ -26,6 +28,7 @@ function AddPlantsButton() {
   const handleClose1 = () => {
     setOpen1(false);
     setOpenTransplant(false);
+    setOpenHarvest(false);
     update(ref(database, "robot/"), { scan: false });
     update(ref(database, "robot/"), { transplant: false });
   };
@@ -44,9 +47,18 @@ function AddPlantsButton() {
     setOpenTransplant(true);
   };
 
-  const handleStart = () => {
+  const handleStart1 = () => {
     update(ref(database, "robot/"), { transplant: true });
     setOpenTransplant(false);
+  };
+
+  const handleHarvest = () => {
+    setOpenHarvest(true);
+  };
+
+  const handleStart2 = () => {
+    update(ref(database, "robot/"), { harvest: true });
+    setOpenHarvest(false);
   };
 
   return (
@@ -115,7 +127,27 @@ function AddPlantsButton() {
           </DialogContent>
           <DialogActions>
             <Button onClick={handleClose1}>Close</Button>
-            <Button onClick={handleStart}>Start</Button>
+            <Button onClick={handleStart1}>Start</Button>
+          </DialogActions>
+        </Dialog>
+      </div>
+      <div>
+        <Tooltip title="Harvesting">
+          <IconButton size="large" onClick={handleHarvest} color="primary">
+            <AddShoppingCartIcon fontSize="inherit" />
+          </IconButton>
+        </Tooltip>
+        <Dialog open={openHarvest} onClose={handleClose1}>
+          <DialogTitle>{"Harvesting"}</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              After clicking "START" robot will start the harvesting the grown
+              plants in upper levels.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose1}>Close</Button>
+            <Button onClick={handleStart2}>Start</Button>
           </DialogActions>
         </Dialog>
       </div>

@@ -51,6 +51,7 @@ function Settings() {
     update(ref(database, "switchState/"), { iController: newChecked });
     update(ref(database, "robot/"), { scan: false });
     update(ref(database, "robot/"), { transplant: false });
+    update(ref(database, "robot/"), { harvest: false });
   };
 
   const handleWaterPumpOn = (e: React.ChangeEvent<HTMLInputElement>) => {

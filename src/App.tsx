@@ -11,9 +11,11 @@ import NetworkStatus from "./components/NetworkStatus";
 function App() {
   return (
     <div>
+      /*
       <Offline>
         <NetworkStatus />
       </Offline>
+      */
       <Online>
         <Router>
           <div style={{ display: "flex" }}>

@@ -1,22 +1,22 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 
 function VideoComponent2() {
   const [imageSrc, _setImageSrc] = useState("");
 
-  /*useEffect(() => {
-    const socket = new WebSocket("ws://192.168.56.1:3001");
+  useEffect(() => {
+    const socket = new WebSocket("ws://192.168.118.85:3001");
 
     socket.addEventListener("message", (event) => {
-      setImageSrc(`data:image/jpeg;base64,${event.data}`);
+      _setImageSrc(`data:image/jpeg;base64,${event.data}`);
       console.log(event.data);
     });
 
     return () => {
       socket.close();
     };
-  }, []);*/
+  }, []);
 
   return (
     <div>
