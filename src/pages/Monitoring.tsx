@@ -23,7 +23,7 @@ const Monitoring = () => {
         <div className="monitoring">
           <SensorData
             index={0}
-            minVal={1}
+            minVal={0}
             maxVal={5}
             title="EC value"
             prefix=" mS/cm"

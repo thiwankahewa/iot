@@ -5,12 +5,11 @@ import { ref, onValue, update } from "firebase/database";
 import Typography from "@mui/material/Typography";
 import { Switch, switchClasses } from "@mui/base/Switch";
 
-const ToggleSwitch: React.FC<{
+const ToggleSwitch2: React.FC<{
   title: string;
   path: string;
 }> = ({ title, path }) => {
   const [isChecked, setIsChecked] = useState<boolean>(false);
-  const [mode, setMode] = useState<boolean>(false);
 
   const handleSwitchChange = () => {
     const newState = !isChecked;
@@ -22,7 +21,6 @@ const ToggleSwitch: React.FC<{
     onValue(ref(database, "switchState"), (snapshot) => {
       const data = snapshot.val();
       setIsChecked(data[path]);
-      setMode(data.iController);
     });
   }, []);
 
@@ -42,7 +40,6 @@ const ToggleSwitch: React.FC<{
           marginRight: "10%",
         }}
         checked={isChecked}
-        disabled={mode}
         onChange={handleSwitchChange}
         slots={{
           root: Root,
@@ -52,7 +49,7 @@ const ToggleSwitch: React.FC<{
   );
 };
 
-export default ToggleSwitch;
+export default ToggleSwitch2;
 
 const blue = {
   500: "#007FFF",

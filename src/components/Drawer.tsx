@@ -14,6 +14,7 @@ import IconButton from "@mui/material/IconButton";
 import { useMediaQuery } from "@mui/material";
 import logo from "../assets/logo.png";
 import bGround from "../assets/1.jpg";
+import BugReportIcon from "@mui/icons-material/BugReport";
 
 const routes = [
   {
@@ -79,6 +80,14 @@ const routes = [
 
   {
     path: "/test",
+    icon: (
+      <div>
+        <Tooltip title="Testing">
+          <BugReportIcon />
+        </Tooltip>
+        <span style={{ marginLeft: "20px" }}>Testing</span>
+      </div>
+    ),
   },
 ];
 

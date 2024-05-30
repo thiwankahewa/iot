@@ -4,24 +4,12 @@ import { database } from "../firebase";
 import { ref, onValue, update } from "firebase/database";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
-import IconButton from "@mui/material/IconButton";
-import SaveIcon from "@mui/icons-material/Save";
-import Tooltip from "@mui/material/Tooltip";
 import Alert from "@mui/material/Alert";
 import Snackbar from "@mui/material/Snackbar";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Divider from "@mui/material/Divider";
-import dayjs, { Dayjs } from "dayjs";
-import { TimePicker } from "antd";
-
-const convertEpochToDayjs = (epochTimeInSeconds: number) => {
-  return dayjs.unix(epochTimeInSeconds);
-};
-
-const convertDayjsToEpoch = (dayjsTime: Dayjs) => {
-  return dayjsTime.unix();
-};
+import Button from "@mui/material/Button";
 
 function Settings() {
   const [alertOpen, setAlertOpen] = useState(false);
@@ -31,11 +19,10 @@ function Settings() {
   const [waterPumpOff, setWaterPumpOff] = useState<number>(0);
   const [fanOn, setFanOn] = useState<number>(0);
   const [fanOff, setFanOff] = useState<number>(0);
-  const [lightOn, setLightOn] = useState<Dayjs | null>(dayjs());
-  const [lightOff, setLightOff] = useState<Dayjs | null>(dayjs());
-  const [lightOnE, setLightOnE] = useState<number>(0);
-  const [lightOffE, setLightOffE] = useState<number>(0);
+  const [lightOn, setLightOn] = useState<number>(0);
+  const [lightOff, setLightOff] = useState<number>(0);
   const [phValue, setPhValue] = useState<number>(0);
+  const [isChecked2, setIsChecked2] = useState<boolean>(false);
 
   const handleSwitchChange = (
     _event: React.MouseEvent<HTMLElement>,
@@ -49,15 +36,13 @@ function Settings() {
     }
     setIsChecked(newChecked);
     update(ref(database, "switchState/"), { iController: newChecked });
-    update(ref(database, "robot/"), { scan: false });
-    update(ref(database, "robot/"), { transplant: false });
-    update(ref(database, "robot/"), { harvest: false });
   };
 
   const handleWaterPumpOn = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = parseFloat(e.target.value);
     if (!isNaN(newValue)) {
       setWaterPumpOn(newValue);
+      setIsChecked2(false);
     }
   };
 
@@ -65,22 +50,15 @@ function Settings() {
     const newValue = parseFloat(e.target.value);
     if (!isNaN(newValue)) {
       setWaterPumpOff(newValue);
+      setIsChecked2(false);
     }
-  };
-
-  const handleWaterPump = () => {
-    update(ref(database, "switchState"), {
-      waterPumpOnTime: waterPumpOn,
-      waterPumpOffTime: waterPumpOff,
-    });
-    setAlertMessage("Water Pump Timer Set");
-    setAlertOpen(true);
   };
 
   const handleFanOn = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = parseFloat(e.target.value);
     if (!isNaN(newValue)) {
       setFanOn(newValue);
+      setIsChecked2(false);
     }
   };
 
@@ -88,37 +66,47 @@ function Settings() {
     const newValue = parseFloat(e.target.value);
     if (!isNaN(newValue)) {
       setFanOff(newValue);
+      setIsChecked2(false);
     }
   };
 
-  const handleFan = () => {
-    update(ref(database, "switchState"), {
-      fanOnTime: fanOn,
-      fanOffTime: fanOff,
-    });
-    setAlertMessage("Fan Timer Set");
-    setAlertOpen(true);
+  const handleLightsOn = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = parseFloat(e.target.value);
+    if (!isNaN(newValue)) {
+      setLightOn(newValue);
+      setIsChecked2(false);
+    }
   };
 
-  const handleLights = () => {
-    update(ref(database, "switchState"), {
-      lightOnTime: lightOnE,
-      lightOffTime: lightOffE,
-    });
-    setAlertMessage("Grow Lights Timer Set");
-    setAlertOpen(true);
+  const handleLightsOff = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = parseFloat(e.target.value);
+    if (!isNaN(newValue)) {
+      setLightOff(newValue);
+      setIsChecked2(false);
+    }
   };
 
   const handlePhValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = parseFloat(e.target.value);
     if (!isNaN(newValue)) {
       setPhValue(newValue);
+      setIsChecked2(false);
     }
   };
 
-  const savePhValue = () => {
-    update(ref(database, "switchState"), { phCal: phValue });
-    setAlertMessage("Ph calibration value Set");
+  const save = () => {
+    update(ref(database, "switchState"), {
+      phCal: phValue,
+      lightOnTime: lightOn,
+      lightOffTime: lightOff,
+      fanOnTime: fanOn,
+      waterPumpOnTime: waterPumpOn,
+      waterPumpOffTime: waterPumpOff,
+      fanOffTime: fanOff,
+      settings: true,
+    });
+    setIsChecked2(true);
+    setAlertMessage("Settings saved successfully");
     setAlertOpen(true);
   };
 
@@ -126,13 +114,12 @@ function Settings() {
     onValue(ref(database, "switchState"), (snapshot) => {
       const data = snapshot.val();
       setIsChecked(data.iController);
-
       setWaterPumpOn(data.waterPumpOnTime);
       setWaterPumpOff(data.waterPumpOffTime);
       setFanOn(data.fanOnTime);
       setFanOff(data.fanOffTime);
-      setLightOn(convertEpochToDayjs(data.lightOnTime));
-      setLightOff(convertEpochToDayjs(data.lightOffTime));
+      setLightOn(data.lightOnTime);
+      setLightOff(data.lightOffTime);
       setPhValue(data.phCal);
     });
   }, []);
@@ -157,7 +144,7 @@ function Settings() {
         style={{
           display: "flex",
           flexDirection: "row",
-          justifyContent: "space-evenly",
+          justifyContent: "space-between",
           paddingTop: "15px",
           paddingBottom: "15px",
         }}
@@ -167,6 +154,7 @@ function Settings() {
           exclusive
           onChange={handleSwitchChange}
           color="primary"
+          style={{ margin: "0 auto" }}
         >
           <ToggleButton
             value={false}
@@ -186,10 +174,9 @@ function Settings() {
           </ToggleButton>
         </ToggleButtonGroup>
       </div>
-      <div style={{ overflowY: "auto", maxHeight: "330px" }}>
+      <div style={{ overflowY: "auto", maxHeight: "275px" }}>
         <Divider textAlign="left">Timers</Divider>
         <br />
-
         <div
           className="setting"
           style={{
@@ -203,6 +190,7 @@ function Settings() {
               label="ON Time (hrs)"
               variant="outlined"
               size="small"
+              type="number"
               value={waterPumpOn}
               onChange={handleWaterPumpOn}
             />
@@ -211,14 +199,10 @@ function Settings() {
               label="OFF Time (hrs)"
               variant="outlined"
               size="small"
+              type="number"
               value={waterPumpOff}
               onChange={handleWaterPumpOff}
             />
-            <Tooltip title="Save">
-              <IconButton onClick={handleWaterPump} color="primary">
-                <SaveIcon />
-              </IconButton>
-            </Tooltip>
           </div>
         </div>
         <br />
@@ -235,28 +219,19 @@ function Settings() {
               label="ON Time (hrs)"
               variant="outlined"
               size="small"
+              type="number"
               value={fanOn}
               onChange={handleFanOn}
-              disabled={isChecked}
             />
             <TextField
               className="input1"
               label="OFF Time (hrs)"
               variant="outlined"
               size="small"
+              type="number"
               value={fanOff}
               onChange={handleFanOff}
-              disabled={isChecked}
             />
-            <Tooltip title="Save">
-              <IconButton
-                onClick={handleFan}
-                color="primary"
-                disabled={isChecked}
-              >
-                <SaveIcon />
-              </IconButton>
-            </Tooltip>
           </div>
         </div>
         <br />
@@ -267,46 +242,26 @@ function Settings() {
           }}
         >
           <Typography className="settingName">Grow Lights Timer</Typography>
+
           <div className="settingContainer">
-            <TimePicker
-              className="input2"
-              disabled={isChecked}
+            <TextField
+              className="input1"
+              label="ON Time (hrs)"
+              variant="outlined"
+              size="small"
+              type="number"
               value={lightOn}
-              size="large"
-              onChange={(newValue) => {
-                setLightOn(newValue);
-                if (newValue) {
-                  console.log(newValue);
-                  console.log(convertDayjsToEpoch(newValue));
-                  setLightOnE(convertDayjsToEpoch(newValue));
-                }
-              }}
+              onChange={handleLightsOn}
             />
-
-            <TimePicker
-              className="input2"
-              disabled={isChecked}
-              size="large"
+            <TextField
+              className="input1"
+              label="OFF Time (hrs)"
+              variant="outlined"
+              size="small"
+              type="number"
               value={lightOff}
-              onChange={(newValue) => {
-                setLightOff(newValue);
-                if (newValue) {
-                  console.log(newValue);
-                  console.log(convertDayjsToEpoch(newValue));
-                  setLightOffE(convertDayjsToEpoch(newValue));
-                }
-              }}
+              onChange={handleLightsOff}
             />
-
-            <Tooltip title="Save">
-              <IconButton
-                onClick={handleLights}
-                color="primary"
-                disabled={isChecked}
-              >
-                <SaveIcon />
-              </IconButton>
-            </Tooltip>
           </div>
         </div>
         <br />
@@ -324,18 +279,33 @@ function Settings() {
               className="input1"
               label="True value:"
               variant="outlined"
+              type="number"
               value={phValue}
               onChange={handlePhValue}
               size="small"
             />
-            <Tooltip title="Save">
-              <IconButton onClick={savePhValue} color="primary">
-                <SaveIcon />
-              </IconButton>
-            </Tooltip>
           </div>
         </div>
         <br />
+      </div>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        <Button
+          variant="contained"
+          onClick={save}
+          color="primary"
+          disabled={isChecked2}
+          style={{
+            borderRadius: "15px",
+            margin: "10px 10px",
+          }}
+        >
+          save
+        </Button>
       </div>
     </Paper>
   );
